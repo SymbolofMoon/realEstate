@@ -7,18 +7,19 @@ export const register = async (req, res) => {
 
     try {
 
-        const { username, email, password } = req.body;
+        const { username, email, password, role } = req.body;
     //hash the password
     const hashedpassword = await bcrypt.hash(password,10);
 
-    console.log(hashedpassword);
+    console.log(hashedpassword, role);
 
     //CREATE A NEW USER AND SAVE TO DB
     const newUser = await prisma.user.create({
         data: {
             username,
             email,
-            password: hashedpassword
+            password: hashedpassword,
+            role
         }
     });
 
@@ -36,7 +37,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
 
-    const { username, password} = req.body;
+    const { username, password, role} = req.body;
     console.log("hello");
 
     try {

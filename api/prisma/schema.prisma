@@ -13,12 +13,18 @@ datasource db {
   url      = "mongodb+srv://prateek2:prateek2@cluster0.hogllh6.mongodb.net/RealState?retryWrites=true&w=majority&appName=Cluster0"
 }
 
+enum Role {
+  admin
+  agent
+  customer
+}
 
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
   username String @unique
-  password String 
+  password String
+  role Role
   avatar String?
   createdAt DateTime @default(now())
   post Post[]
