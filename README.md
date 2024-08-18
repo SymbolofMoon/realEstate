@@ -3,7 +3,7 @@ This project allow users to explore about real estate properties in their desire
 
 ## (Phase 2)MileStones to achieve
 - [X] Implement Role based authentication in backend(Agent and Customer)
-- [ ] Apply the same Role based registration and login in frontend.
+- [X] Apply the same Role based registration and login in frontend.
 - [ ] Normal Post Can be common but User 1 cannot see the User2 saved post.
 - [ ] Fill More Users, post, location etc.
 - [ ] Make sure that filter based searches are working.
