@@ -104,6 +104,7 @@ export const savePost = async(req, res) => {
     const tokenUserId = req.userId;
 
 
+
     try {
         
         const savedPost = await prisma.savedPost.findUnique({
@@ -143,7 +144,8 @@ export const savePost = async(req, res) => {
 
 export const profilePosts = async(req, res) => {
 
-    const tokenUserId = req.params.userId;
+    const tokenUserId = req.userId;
+    console.log("this is tokenuser id from profile post",tokenUserId);
 
 
     try {
@@ -159,7 +161,7 @@ export const profilePosts = async(req, res) => {
 
         const savedPosts = saved.map((item) => item.post);
 
-        res.status(200).json({userPosts, savedPosts});
+        res.status(200).json({savedPosts});
         return;
 
     } catch (error) {
