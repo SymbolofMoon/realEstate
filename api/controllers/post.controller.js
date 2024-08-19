@@ -2,6 +2,7 @@ import { idText } from "typescript";
 import prisma from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
 
+
 export const getPosts = async(req, res) => {
 
     const query = req.query;
@@ -115,6 +116,29 @@ export const addPost = async(req, res) => {
 export const updatePost = async(req, res) => {
     try {
         
+        const postId = req.params.id;
+        const tokenUserId =  req.userId;
+        const body = req.body;
+     
+
+        const updatePost = await prisma.post.update({
+            where: { 
+                id:postId 
+            },
+            data: {
+                ...body.postData,
+                postDetail: {
+                    update: body.postDetail,
+                }
+            }
+        }); 
+        console.log("this is for updated body for post",updatePost);
+        
+
+        res.status(200).json(updatePost);
+
+
+
     } catch (error) {
         console.log(error);
         res.status(500).json({message: "Failed to Update Post"});
