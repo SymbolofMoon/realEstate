@@ -7,9 +7,9 @@ This project allow users to explore about real estate properties in their desire
 - [X] Normal Post Can be common but User 1 cannot see the User2 saved post.
 - [X] Fill More Users, post, location etc.
 - [X] Make sure that filter based searches are working.
-- [ ] Customer cannot create a post for property
+- [X] Customer cannot create a post for property
 - [ ] Customer can list down the agents.
-- [ ] Agents can create and update post for property.
+- [X] Agents can create and update post for property.
 - [ ] Implement Map based searching.
 - [ ] Customer and Agent Chat System.
 - [ ] Customer can set up an alert for a post from particular agent.
@@ -28,3 +28,4 @@ This project allow users to explore about real estate properties in their desire
 - [ ] Initially, agent is registring through the page. I want that first admin verify the details of admin then he will make sure that if the admin will be registered or not.
 - [ ] Add the feature that user can easily see that this post is saved by how many people and agent can see the list of peoples.
 - [ ] Add Contact Number for agent
+- [ ] Agent cannot update another one's property.
