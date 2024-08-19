@@ -198,3 +198,37 @@ export const getNotificationNumber = async(req, res) => {
         res.status(500).json({message: "Failed to get number of notifications"});
     }
 }
+
+// export const addCity = async(req, res) => {
+
+//     const body = req.body;
+    
+
+//     try {
+//         const newCity = await prisma.city.create({
+//             data: {
+//                 city_name:body.city_name
+//             }
+//         });
+
+//         res.status(200).json(newCity);
+
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({message: "Failed to Add City"});
+//     }
+// }
+
+// export const getCities = async(req, res) => {
+//     try {
+//         const cities = await prisma.city.findMany();
+        
+
+//         console.log(cities);
+//         res.status(200).json(cities);
+
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({message: "Failed to Get Cities"});
+//     }
+// }

@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export const getPosts = async(req, res) => {
 
     const query = req.query;
-    console.log(query);
+    console.log("this is query", query);
 
     try {
         const posts = await prisma.post.findMany(
@@ -17,11 +17,14 @@ export const getPosts = async(req, res) => {
                     bedroom: parseInt(query.bedroom) || undefined,
                     price:{
                         gte: parseInt(query.minPrice) || 0,
-                        lte: parseInt(query.maxPrice) || 1000000
+                        lte: parseInt(query.maxPrice) || 1000000000
                     }
                 }
             }
         );
+
+   
+     
         console.log(posts);
         res.status(200).json(posts);
 
@@ -131,6 +134,12 @@ export const deletePost = async(req, res) => {
         if(post.userId !== tokenUserId){
             return res.status(403).json({message: "Not AUthorized!!!"});
         }
+
+        await prisma.postDetail.delete({
+            where: {
+                postId: post.id
+            }
+        })
 
         await prisma.post.delete({
             where: {id}

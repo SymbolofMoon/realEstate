@@ -14,6 +14,10 @@ router.delete("/:id", verifyToken, deleteUser);
 
 router.post("/save", verifyToken, savePost);
 
+// router.post("/addCity", addCity);
+
+// router.get("/getCities", getCities);
+
 router.get("/profilePosts", verifyToken, profilePosts);
 
 router.get("/notification", verifyToken, getNotificationNumber);
