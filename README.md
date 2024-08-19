@@ -5,8 +5,8 @@ This project allow users to explore about real estate properties in their desire
 - [X] Implement Role based authentication in backend(Agent and Customer)
 - [X] Apply the same Role based registration and login in frontend.
 - [X] Normal Post Can be common but User 1 cannot see the User2 saved post.
-- [ ] Fill More Users, post, location etc.
-- [ ] Make sure that filter based searches are working.
+- [X] Fill More Users, post, location etc.
+- [X] Make sure that filter based searches are working.
 - [ ] Customer cannot create a post for property
 - [ ] Customer can list down the agents.
 - [ ] Agents can create and update post for property.
