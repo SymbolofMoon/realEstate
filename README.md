@@ -8,7 +8,7 @@ This project allow users to explore about real estate properties in their desire
 - [X] Fill More Users, post, location etc.
 - [X] Make sure that filter based searches are working.
 - [X] Customer cannot create a post for property
-- [ ] Customer can list down the agents.
+- [X] Customer can list down the agents.
 - [X] Agents can create and update post for property.
 - [ ] Implement Map based searching.
 - [ ] Customer and Agent Chat System.
