@@ -1,10 +1,12 @@
 import express from "express";
-import { getUsers, getUser, updateUser, deleteUser, savePost, profilePosts, getNotificationNumber } from "../controllers/user.controller.js";
+import { getUsers, getAgentUsers, getUser, updateUser, deleteUser, savePost, profilePosts, getNotificationNumber } from "../controllers/user.controller.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
 router.get("/", getUsers);
+
+router.get("/agents", getAgentUsers);
 
 // router.get("/:id", verifyToken,  getUser);
 

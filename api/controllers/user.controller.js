@@ -13,6 +13,26 @@ export const getUsers = async(req, res) => {
     }
 }
 
+export const getAgentUsers = async(req, res) => {
+    try {
+
+        const query = req.query;
+        console.log("this is query", query);
+
+        const users = await prisma.user.findMany({
+            where:{
+                role: 'agent',
+                username: query.username || undefined,
+            }
+        });
+        res.status(200).json(users);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Failed to get Agent Users"});
+    }
+}
+
 export const getUser = async(req, res) => {
 
     const id = req.params.id;
