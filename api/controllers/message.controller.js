@@ -25,6 +25,7 @@ export const addMessage = async(req, res) => {
                 text,
                 chatId,
                 userId: tokenUserId,
+                
             }
         });
 
@@ -43,4 +44,33 @@ export const addMessage = async(req, res) => {
         console.log(error);
         res.status(500).json({message: "Failed to add messages"});
     }
+}
+
+export const seenMessage =  async(req, res)=>{
+
+    const latestMsgfromrecv = req.body.latestDatafromReceiver;
+
+    const chatId = latestMsgfromrecv.chatId;
+    const recvId = req.userId;
+    const latesttxt = latestMsgfromrecv.text;
+    const sendId = latestMsgfromrecv.userId;
+
+    try{
+        const upadtedchat = await prisma.chat.update({
+            where:{
+                id: chatId,
+            },
+            data: {
+                seenBy: [sendId, recvId],
+                lastMessage: latesttxt
+            }
+        })
+        res.status(200).json(upadtedchat);
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({message: "Failed to add messages"});
+    }
+
+
 }

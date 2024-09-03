@@ -24,6 +24,8 @@ export const getPosts = async(req, res) => {
             }
         );
 
+        
+
    
      
         console.log(posts);

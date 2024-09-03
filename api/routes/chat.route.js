@@ -5,7 +5,9 @@ import {
     getChat,
     addChat,
     readChat,
-    deleteChat
+    deleteChat,
+    getPeopleChat
+
 } from "../controllers/chat.controller.js";
 
 const router = express.Router();
@@ -13,6 +15,8 @@ const router = express.Router();
 router.get("/", verifyToken, getChats);
 
 router.get("/:id", verifyToken, getChat);
+
+router.get("/to/:id", verifyToken, getPeopleChat);
 
 router.post("/", verifyToken, addChat);
 

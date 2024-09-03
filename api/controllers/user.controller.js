@@ -210,7 +210,7 @@ export const getNotificationNumber = async(req, res) => {
             }
         })
 
-        console.log("this is chatnumber", chatsnumber);
+        // console.log("this is chatnumber", chatsnumber);
         res.status(200).json(chatsnumber);
 
     } catch (error) {
