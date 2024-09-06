@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 export const getChats = async(req, res) => {
 
     const tokenUserId = req.userId;
-    console.log(tokenUserId);
+    
 
     try {
 
@@ -16,7 +16,6 @@ export const getChats = async(req, res) => {
             }
         });
 
-        console.log(typeof chats);
         let i=1;
 
         for(const chat of chats){
@@ -89,15 +88,16 @@ export const addChat = async(req, res) => {
 }
 
 export const getChat = async(req, res) => {
-    console.log(req);
+    
     const tokenUserId = req.userId;
+    console.log("Chat is called");
 
     console.log(tokenUserId);
     try {
 
         const chat = await prisma.chat.findUnique({
             where: {
-                id: req.params.id,
+                id: req.params.chatId,
                 userIDs: {
                     hasSome: [tokenUserId],
                 }
@@ -112,7 +112,7 @@ export const getChat = async(req, res) => {
         });
         await prisma.chat.update({
             where: {
-                id: req.params.id
+                id: req.params.chatId
             },
             data: {
                 seenBy: {

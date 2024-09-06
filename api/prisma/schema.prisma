@@ -45,6 +45,7 @@ enum City {
   TelAviv
   WashingtonDC
   City1  
+  Singapore
 }
 
 model Post {

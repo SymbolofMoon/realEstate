@@ -7,7 +7,7 @@ import {
 const router = express.Router();
 
 router.post("/:chatId", verifyToken, addMessage);
-router.put("/:msgId", verifyToken, seenMessage );
+router.put("/:chatId", verifyToken, seenMessage );
 
 
 export default router;

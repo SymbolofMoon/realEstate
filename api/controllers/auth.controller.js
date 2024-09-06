@@ -10,6 +10,12 @@ export const register = async (req, res) => {
 
     console.log(hashedpassword, role);
 
+    const user = await prisma.user.findUnique({
+        where: {email}
+    })
+
+    if(user) return res.status(404).json({message: "User is already registered!!!"});
+
     //CREATE A NEW USER AND SAVE TO DB
     const newUser = await prisma.user.create({
         data: {
@@ -35,7 +41,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
 
     const { username, password, role} = req.body;
-    console.log("hello");
+    console.log(req.body);
 
     try {
         //CHECK IF USER EXIST

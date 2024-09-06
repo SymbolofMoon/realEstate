@@ -48,24 +48,31 @@ export const addMessage = async(req, res) => {
 
 export const seenMessage =  async(req, res)=>{
 
-    const latestMsgfromrecv = req.body.latestDatafromReceiver;
+    const lastmsgseenbyuser = req.body.data;
 
-    const chatId = latestMsgfromrecv.chatId;
+    const chatId = req.params.chatId;
     const recvId = req.userId;
-    const latesttxt = latestMsgfromrecv.text;
-    const sendId = latestMsgfromrecv.userId;
+    const latesttxt = lastmsgseenbyuser.text;
+    const sendId = lastmsgseenbyuser.senderId;
+
+    const chat = await prisma.chat.findUnique({
+        where: { id: chatId },
+      });
+
+    const updatedSeenBy = Array.from(new Set([...chat.seenBy, sendId, recvId]));
 
     try{
-        const upadtedchat = await prisma.chat.update({
+        const updatedchat = await prisma.chat.update({
             where:{
                 id: chatId,
             },
             data: {
-                seenBy: [sendId, recvId],
+                seenBy:  updatedSeenBy,
                 lastMessage: latesttxt
             }
         })
-        res.status(200).json(upadtedchat);
+        console.log(updatedchat);
+        res.status(200).json(updatedchat);
 
     }catch(error){
         console.log(error);
