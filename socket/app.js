@@ -6,13 +6,26 @@ const io = new Server({
     }
 });
 
-const onlineUser = []
+let onlineUser = []
 
 const addUser = (userId, socketId) => {
-    const userExist =  onlineUser.find((user) => user.userId===userId);
+    let userExist =  onlineUser.find((user) => user.userId===userId);
+    console.log("this function is called");
+    if(userExist){
+        onlineUser =  onlineUser.filter((user) => user.userId !== userId);
+        userExist = null;
+    }
     if(!userExist){
         onlineUser.push({userId, socketId})
     }
+}
+
+const socketIdfromuserId = (userId) => {
+    const user =  onlineUser.find((user) => user.userId===userId);
+
+    
+
+    return user ? user.socketId : null;
 }
 
 const removeUser = (socketId) => {
@@ -29,10 +42,20 @@ io.on("connection", (socket)=> {
     });
 
     socket.on("sendMessage", ({ receiverId, data}) => {
-        console.log(receiverId);
+        console.log("this is data", data);
+        console.log("this is socket id",  socket.id);
+
+        console.log(onlineUser);
+
+        const sid = socketIdfromuserId(receiverId);
+        console.log(sid);
+//njkj
+        io.to(sid).emit('receiveMessage', data);
+
     })
 
     socket.on("disconnection", (userId)=>{
+        console.log("disconnection is called");
         removeUser(socket.id);
     })
 })

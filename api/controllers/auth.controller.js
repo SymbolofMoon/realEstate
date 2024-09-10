@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import prisma from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
+import { onlineUser } from "../app.js";
 
 export const register = async (req, res) => {
     try {
@@ -9,6 +10,12 @@ export const register = async (req, res) => {
     const hashedpassword = await bcrypt.hash(password,10);
 
     console.log(hashedpassword, role);
+
+    const user = await prisma.user.findUnique({
+        where: {email}
+    })
+
+    if(user) return res.status(404).json({message: "User is already registered!!!"});
 
     //CREATE A NEW USER AND SAVE TO DB
     const newUser = await prisma.user.create({
@@ -35,7 +42,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
 
     const { username, password, role} = req.body;
-    console.log("hello");
+    console.log(req.body);
 
     try {
         //CHECK IF USER EXIST
@@ -83,5 +90,8 @@ export const login = async (req, res) => {
 }
 
 export const logout = (req, res) => {
+
+    const tokenUserId =  req.userId;
+    onlineUser.filter((user)=> user.userId!==tokenUserId);
     res.clearCookie("token").status(200).json({message:"Logout Successful!!"});
 }
