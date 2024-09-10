@@ -10,11 +10,12 @@ This project allow users to explore about real estate properties in their desire
 - [X] Customer cannot create a post for property
 - [X] Customer can list down the agents.
 - [X] Agents can create and update post for property.
-- [ ] Implement Map based searching.
-- [ ] Customer and Agent Chat System.
-- [ ] Customer can set up an alert for a post from particular agent.
+- [X] Implement Map based searching.
+- [X] Customer and Agent Chat System.
+- [X] Customer can set up an alert for a post from particular agent.
 
 ## (Phase 3) MileStones to achieve
+- [ ] Add Link for List page of properties
 - [ ] Add comment, like functionality in each post for property.
 - [ ] User can see the search history.
 - [ ] User can receive a mail if a particular property is listed down in his favorite area.
@@ -29,3 +30,4 @@ This project allow users to explore about real estate properties in their desire
 - [ ] Add the feature that user can easily see that this post is saved by how many people and agent can see the list of peoples.
 - [ ] Add Contact Number for agent
 - [ ] Agent cannot update another one's property.
+- [ ] Add Contact Form
