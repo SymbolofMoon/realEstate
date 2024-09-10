@@ -110,16 +110,16 @@ export const getChat = async(req, res) => {
                 }
             }
         });
-        await prisma.chat.update({
-            where: {
-                id: req.params.chatId
-            },
-            data: {
-                seenBy: {
-                    set: [tokenUserId]
-                }
-            }
-        })
+        // await prisma.chat.update({
+        //     where: {
+        //         id: req.params.chatId
+        //     },
+        //     data: {
+        //         seenBy: {
+        //             set: [tokenUserId]
+        //         }
+        //     }
+        // })
         res.status(200).json(chat);
         
     } catch (error) {

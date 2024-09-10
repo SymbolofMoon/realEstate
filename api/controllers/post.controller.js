@@ -1,7 +1,9 @@
 import { idText } from "typescript";
 import prisma from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
-
+import { addNotification } from "./user.controller.js";
+import { onlineUser } from "../app.js";
+import { io, socketIdfromuserId } from "../app.js";
 
 export const getPosts = async(req, res) => {
 
@@ -31,6 +33,7 @@ export const getPosts = async(req, res) => {
         res.status(500).json({message: "Failed to Get Posts"});
     }
 }
+
 
 export const getPost = async(req, res) => {
     const postId = req.params.postId;
@@ -78,10 +81,7 @@ export const getPost = async(req, res) => {
                 }
             })
     
-        }
-    
-        
-        
+        }      
        return  res.status(200).json({...post, isSaved: saved? true: false});
         
     } catch (error) {
@@ -100,13 +100,73 @@ export const addPost = async(req, res) => {
         const newPost = await prisma.post.create({
             data: {
                 ...body.postData,
-                userId: tokenUserId,
+                // userId: tokenUserId,
+                user:{
+                    connect: {
+                        id: tokenUserId
+                    }
+                },
                 postDetail: {
                     create: body.postDetail,
+                }
+                
+            },
+            include: {
+                user: {
+                    select:{
+                        username: true,
+                    }
                 }
             }
         });
 
+
+        try{
+        
+
+            const content = `${newPost?.user?.username} added a new Property`;
+            console.log(content);
+
+            const newNotification =  await prisma.notification.create({
+                data: {
+                    content_of_notification:content,
+                    userId: tokenUserId
+                }
+            });
+
+            console.log(newNotification);
+            const notification = {
+                createdAt: newNotification.createdAt,
+                content: newNotification.content_of_notification,
+                sendBy: newNotification.userId,
+                id: newNotification.id
+            }
+
+            const subscribers = await prisma.publisherandSubscribers.findMany({
+                where: {
+                    publisherId: tokenUserId
+                }
+            });
+            console.log(subscribers);
+            console.log(onlineUser);
+
+            for(const subscriber of subscribers){
+
+                const subscriberId = subscriber.subscriberId;
+                const socketId = socketIdfromuserId(subscriberId);
+                console.log(socketId);
+
+                const x = io.to(socketId).emit('sendNotification', notification );
+                console.log(x);
+
+            }
+            
+            
+        }catch(error){
+            console.log(error)
+        }
+
+        
         res.status(200).json(newPost);
 
     } catch (error) {

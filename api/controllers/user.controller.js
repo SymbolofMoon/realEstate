@@ -1,5 +1,6 @@
 import prisma from "../lib/prisma.js";
 import bcrypt from "bcrypt";
+import { onlineUser } from "../app.js";
 
 export const getUsers = async(req, res) => {
     try {
@@ -14,6 +15,8 @@ export const getUsers = async(req, res) => {
 }
 
 export const getAgentUsers = async(req, res) => {
+    console.log(req.userId);
+    console.log(onlineUser);
     try {
 
         const query = req.query;
@@ -23,9 +26,31 @@ export const getAgentUsers = async(req, res) => {
             where:{
                 role: 'agent',
                 username: query.username || undefined,
+            },
+            include:{
+                publisher:{
+                    where:{
+                        subscriberId:req.userId
+                    }
+                }
             }
         });
-        res.status(200).json(users);
+
+        // for(const user of users){
+        //     console.log(user);
+        // }
+
+        const safeuser = users.map(({ password, ...user }) => user)
+
+        // console.log(safeuser);
+        // const relation = await prisma.publisherandSubscribers.findMany({
+        //     where:{
+        //         subscriberId: req.userId
+        //     }
+        // })
+        
+        
+        res.status(200).json(safeuser);
 
     } catch (error) {
         console.log(error);
@@ -192,10 +217,7 @@ export const profilePosts = async(req, res) => {
 
 
 export const getNotificationNumber = async(req, res) => {
-
     const tokenUserId = req.userId;
-
-
     try {
         const chatsnumber = await prisma.chat.count({
             where: {
@@ -216,6 +238,156 @@ export const getNotificationNumber = async(req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({message: "Failed to get number of notifications"});
+    }
+}
+
+export const addSubscriber = async(req, res) => {
+
+    const publisherId = req.body.publisherId; //Agent
+    const subscriberId = req.userId;  //Customer
+    
+
+    try {        
+        const relationPublisherandSubscriber = await prisma.publisherandSubscribers.findUnique({
+            where: {
+                publisherId_subscriberId: {
+                    publisherId,
+                    subscriberId,
+                },
+            }
+        })
+        console.log(relationPublisherandSubscriber);
+        if(relationPublisherandSubscriber){
+            await prisma.publisherandSubscribers.delete({
+                where: {
+                    id: relationPublisherandSubscriber.id
+                }
+            })
+            res.status(200).json({message:"Customer unsubscribe the Agent"});
+            return
+        }else{
+            await prisma.publisherandSubscribers.create({
+                data: {
+                    publisherId,
+                    subscriberId,
+                }
+            })
+             res.status(200).json({message:"Customer subscribe the Agent"});
+             return;
+        }
+       
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Failed to Save Post"});
+    }
+}
+
+export const getAllPublisherandSubscriberRelations = async(req, res) => {
+    try {
+
+        const PublisherandSubscriberRelations = await prisma.publisherandSubscribers.findMany();
+        res.status(200).json(PublisherandSubscriberRelations);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Failed to get Users"});
+    }
+}
+
+export const addNotification = async(req, res) => {
+    try {
+        
+        const userId = req.userId;
+        const content =  req.body.content;
+
+        const newNotification =  await prisma.notification.create({
+                data: {
+                    content_of_notification:content,
+                    userId
+                }
+        });
+
+        res.status(200).send(newNotification);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: 'Failed to create notification' });
+    }
+}
+
+export const fetchNotifications =  async(req, res)=>{
+    const tokenUserId =  req.userId;
+
+
+    try {
+
+        const publishers = await prisma.publisherandSubscribers.findMany({
+            where: {
+                subscriberId: tokenUserId
+            }
+        })
+
+        const notifications = []
+
+        for(const publisher of publishers){
+            console.log(publisher.publisherId);
+            
+            const notification =  await prisma.notification.findMany({
+                where:{
+                    userId:publisher.publisherId,
+                    NOT: {
+                        readBy: {
+                            hasSome:[tokenUserId]
+                        }
+                        
+                    }
+                }
+            });
+
+
+            console.log("notification is",notification)
+            if(notification.length!=0){
+                for(const data of notification){
+                    notifications.push(data);
+                }
+            }
+        }
+
+
+        res.status(200).send(notifications);
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: 'Failed to fetch notifications' });
+    }
+}
+
+export const readNotification =  async(req, res)=>{
+    const tokenUserId =  req.userId;
+
+    const notificationId = req.params.notificationId;
+
+    try {
+
+        const notification = await prisma.notification.findUnique({
+            where: { id: notificationId },
+            select: { readBy: true }, 
+          });
+
+        const updatedReadBy = notification.readBy.includes(tokenUserId)
+                                ? notification.readBy
+                                : [...notification.readBy, tokenUserId];
+          
+        const updatedNotification = await prisma.notification.update({
+              where: { id: notificationId },
+              data: { readBy: updatedReadBy },
+            });
+
+        res.status(200).send(updatedNotification);
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: 'Failed to fetch notifications' });
     }
 }
 

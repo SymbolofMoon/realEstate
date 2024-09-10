@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import prisma from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
+import { onlineUser } from "../app.js";
 
 export const register = async (req, res) => {
     try {
@@ -89,5 +90,8 @@ export const login = async (req, res) => {
 }
 
 export const logout = (req, res) => {
+
+    const tokenUserId =  req.userId;
+    onlineUser.filter((user)=> user.userId!==tokenUserId);
     res.clearCookie("token").status(200).json({message:"Logout Successful!!"});
 }
