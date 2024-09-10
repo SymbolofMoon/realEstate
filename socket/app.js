@@ -6,7 +6,7 @@ const io = new Server({
     }
 });
 
-let onlineUser = []
+export let onlineUser = []
 
 const addUser = (userId, socketId) => {
     let userExist =  onlineUser.find((user) => user.userId===userId);
