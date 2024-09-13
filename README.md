@@ -55,14 +55,12 @@ To install the Dependencieson server side, use:
 ```
     cd api
     npm install requirement_server.txt
-
 ```
 
 To install the Dependencieson client side, use:
 ```
     cd api
     npm install requirement_client.txt
-
 ```
 
 So the Dependencies in Server side are:
