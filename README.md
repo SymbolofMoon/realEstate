@@ -75,6 +75,10 @@ So the Dependencies in Server side are:
         "nodemon": "^3.1.4",
         "socket.io": "^4.7.5"
 
+
+
+        .....and many more.....
+
 ```
 
 And the Dependencies in Client side are:
@@ -95,6 +99,9 @@ And the Dependencies in Client side are:
         "socket.io-client": "^4.7.5",
         "timeago.js": "^4.0.2",
         "zustand": "^4.5.4"
+
+
+    .....and many more.....
 
 ```
 
