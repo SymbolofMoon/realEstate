@@ -106,7 +106,7 @@ const chatSlice = createSlice({
 });
 
 export const selectChatById = (state, chatId) => {
-    return state.chats?.chats?.find(chat => chat.id === chatId);
+    return state.chats.chats.find(chat => chat.id === chatId);
   };
 
 export const selectReceiverByChatId = (state, chatId) => {
