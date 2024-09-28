@@ -13,7 +13,7 @@ import http from "http";
 
 const app = express();
 
-app.use(cors({origin: "http://localhost:5173", credentials:true }));
+app.use(cors({origin: "https://realestate-frontend-2.onrender.com", credentials:true }));
 app.use(express.json());
 app.use(cookieParser());
 
