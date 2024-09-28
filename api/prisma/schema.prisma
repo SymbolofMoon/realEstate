@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = "mongodb+srv://prateek2:prateek2@cluster0.hogllh6.mongodb.net/RealState?retryWrites=true&w=majority&appName=Cluster0"
+  url      = "mongodb+srv://prateek2:prateek2@cluster0.hogllh6.mongodb.net/RealState?ssl=true&retryWrites=true&w=majority&appName=Cluster0"
 }
 
 enum Role {
