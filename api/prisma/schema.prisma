@@ -3,14 +3,14 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mongodb"
-  url      = "mongodb+srv://prateek2:prateek2@cluster0.hogllh6.mongodb.net/RealState?retryWrites=true&w=majority&appName=Cluster0"
+  // url      = "mongodb+srv://prateek2:prateek2@cluster0.hogllh6.mongodb.net/RealState?retryWrites=true&w=majority&appName=Cluster0"
+  url    = env("DATABASE_URL")
 }
 
 enum Role {

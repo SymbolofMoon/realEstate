@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import prisma from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
+import config from '../config/config.js';
 import { onlineUser } from "../app.js";
 
 export const register = async (req, res) => {
@@ -69,7 +70,7 @@ export const login = async (req, res) => {
         id:user.id,
         isAdmin: false,
         role: user.role
-    }, "R7t7A=75t485tcehfru", { expiresIn: age})
+    }, config.secretKey, { expiresIn: age})
     
     console.log("token while logging",token);
 

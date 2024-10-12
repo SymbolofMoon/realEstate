@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import config from './config/config.js';
 import cookieParser from "cookie-parser";
 import postRoute from "./routes/post.route.js";
 import authRoute from "./routes/auth.route.js";
@@ -12,6 +13,7 @@ import http from "http";
 
 
 const app = express();
+
 
 app.use(cors({origin: "http://localhost:5173", credentials:true }));
 app.use(express.json());
@@ -82,6 +84,6 @@ io.on("connection", (socket)=> {
 })
 
 
-server.listen(8080, ()=> {
+server.listen(config.port, ()=> {
     console.log("Server is running!!!");
 })
