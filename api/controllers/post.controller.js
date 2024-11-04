@@ -51,7 +51,17 @@ export const getPost = async(req, res) => {
                         username: true,
                         avatar: true
                     }
-                }
+                },
+                comments: {
+                    include: {
+                      user: { // Fetch the user associated with each comment
+                        select: {
+                          username: true, // Select only the username field
+                          avatar: true
+                        },
+                      },
+                    },
+                },
             }
         });
 
@@ -81,8 +91,40 @@ export const getPost = async(req, res) => {
                 }
             })
     
-        }      
-       return  res.status(200).json({...post, isSaved: saved? true: false});
+        }
+
+        let liked = null
+        if (token){
+            try {
+                liked = await prisma.like.findUnique({
+                    where: {
+                        userId_postId: {
+                            postId: postId,
+                            userId: userId
+                        },
+                    }
+                })
+            } catch (error) {
+                liked = null;
+                console.log(error);
+            }
+        }
+
+        // let comment = [];
+        // if (token){
+        //     try {
+        //         comment = await prisma.comment.findMany({
+        //             where: {
+        //                     postId: postId,
+        //             },
+           
+        //         })
+        //     } catch (error) {
+        //         comment = [];
+        //         console.log(error);
+        //     }
+        // }
+       return  res.status(200).json({...post, isSaved: saved? true: false, isLiked: liked?true:false});
         
     } catch (error) {
         console.log(error);
@@ -243,4 +285,94 @@ export const deletePost = async(req, res) => {
         console.log(error);
         res.status(500).json({message: "Failed to Delete Post"});
     }
+}
+
+export const likePost = async(req, res) => {
+
+    const postId = req.body.postId;
+    const tokenUserId = req.userId;
+    try {
+        
+        const LikeonPost = await prisma.like.findUnique({
+            where: {
+                
+                userId_postId: {
+                    userId: tokenUserId,
+                    postId: postId,
+                },
+            }
+        })
+
+        if(LikeonPost){
+            console.log("a");
+            const latestpost = await prisma.post.update({
+                where:{
+                    id:postId,
+                }, 
+                data: {
+                    likeCount: {
+                        decrement: 1,
+                    },
+                }
+                
+            })
+            await prisma.like.delete({
+                where: {
+                    id: LikeonPost.id
+                }
+            })
+            
+            res.status(200).send(latestpost);
+            return
+        }else{
+            const latestpost = await prisma.post.update({
+                where:{
+                    id:postId,
+                }, 
+                data: {
+                    likeCount: {
+                        increment: 1,
+                    },
+                }
+                
+            })
+            // console.log(latestpost.likeCount);
+            await prisma.like.create({
+                data: {
+                    userId: tokenUserId,
+                    postId
+                }
+            })
+             res.status(200).send(latestpost);
+             return;
+        }   
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Failed to Like Post"});
+    }
+}
+
+export const createCommentonPost = async(req, res)=> {
+
+    
+
+    try{
+
+    const postId = req.body.postId;
+    const userId = req.userId;
+    const content = req.body.content;
+    const newComment = await prisma.comment.create({
+                data: {
+                    content,
+                    userId,
+                    postId
+                }
+    });
+
+    res.status(200).send(newComment);
+}catch(error){
+        console.log(error);
+        res.status(500).send({ error: 'Failed to Create Comment' });
+}
 }

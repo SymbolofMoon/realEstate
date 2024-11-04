@@ -16,7 +16,8 @@ const app = express();
 
 
 
-app.use(cors({origin: "https://realestate-frontend-2.onrender.com", credentials:true }));
+// app.use(cors({origin: "https://realestate-frontend-2.onrender.com", credentials:true }));
+app.use(cors({origin: "http://localhost:5173", credentials: true}));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -33,8 +34,8 @@ const server = http.createServer(app);
 // Initialize Socket.io and bind it to the HTTP server
 export const io = new Server(server, {
     cors: {
-        // origin: "http://localhost:5173",
-        origin: "https://realestate-frontend-2.onrender.com",
+        origin: "http://localhost:5173",
+        // origin: "https://realestate-frontend-2.onrender.com",
     },
 });
 
