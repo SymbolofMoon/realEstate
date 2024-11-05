@@ -354,11 +354,7 @@ export const likePost = async(req, res) => {
 }
 
 export const createCommentonPost = async(req, res)=> {
-
-    
-
     try{
-
     const postId = req.body.postId;
     const userId = req.userId;
     const content = req.body.content;
@@ -367,6 +363,14 @@ export const createCommentonPost = async(req, res)=> {
                     content,
                     userId,
                     postId
+                },
+                include: {
+                    user: {
+                        select: {
+                            username: true,
+                            avatar: true
+                        }
+                    }
                 }
     });
 
