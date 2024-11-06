@@ -2,8 +2,8 @@ import "./singlePage.scss";
 import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
 import RatingModal from "../../components/ratingmodal/RatingModal";
-import apiRequest from '../../lib/apiRequest';
-import { redirect, useLoaderData } from "react-router-dom";
+import SharingModal from "../../components/sharingmodal/SharingModal";
+import { redirect } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
@@ -23,7 +23,7 @@ function SinglePage() {
   const error = useSelector(getPostError);
   const dispatch = useDispatch();
   const [saved, setSaved] = useState(post?.isSaved || false);
-  
+
  
 
   const [likeCount, setLikeCount] = useState(post?.likeCount || 0);
@@ -31,9 +31,13 @@ function SinglePage() {
   const [isLike, setIsLike] = useState(post?.isLiked || false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isShareModelOpen, setIsShareModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const openShareModal = () => setIsShareModalOpen(true);
+  const closeShareModal = () => setIsShareModalOpen(false); 
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -359,6 +363,11 @@ function SinglePage() {
               </div> */}
             </div>
           </div>
+          <p className="title">Share the Post</p>
+          <button
+            onClick={openShareModal} className="open-modal-btn"
+            > Share the Post </button>
+          <SharingModal isOpen={isShareModelOpen} onClose={closeShareModal} postId={postId} />
         </div>
       </div>
     </div>
