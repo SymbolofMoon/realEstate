@@ -36,6 +36,7 @@ model User {
   notification Notification[]
   likePost Like[]
   commentPost Comment[]
+  postRatings PostRating[]
 }
 
 enum City {
@@ -75,6 +76,7 @@ model Post {
   likes Like[]
   likeCount Int @default(0)
   comments Comment[]
+  ratings PostRating[]
 }
 
 enum Type {
@@ -183,4 +185,16 @@ model Comment {
 
   @@unique([userId, postId, createdAt])
 
+}
+
+model PostRating {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  post Post  @relation(fields: [postId], references: [id])
+  postId String @db.ObjectId
+  user User  @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+  rating Int
+
+  @@unique([userId, postId]) 
 }

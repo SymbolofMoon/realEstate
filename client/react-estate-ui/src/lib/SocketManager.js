@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 
-const SOCKET_URL = 'https://realestate-1-w8z2.onrender.com';//'http://localhost:8080';
+// const SOCKET_URL = 'https://realestate-1-w8z2.onrender.com';//;
+const SOCKET_URL = 'http://localhost:8080';
 let socket;
 
 export const getSocket = () => {

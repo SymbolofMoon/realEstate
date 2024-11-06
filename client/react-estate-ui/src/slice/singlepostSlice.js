@@ -38,7 +38,6 @@ export const updatePost = createAsyncThunk('post/updatePost', async ({postId, po
 
 export const fetchPostById = createAsyncThunk('post/fetchPostById', async (postId) => {
     const response = await apiRequest.get(`/post/${postId}`);
-    console.log("response", response);
     return response.data;
   });
 
@@ -59,7 +58,21 @@ export const savePost = createAsyncThunk(
       return { postId, saved };
     }
   );
-  
+
+export const likePost = createAsyncThunk('post/like', async({postId, liked})=> {
+    const res = await apiRequest.post('/post/like', {postId});
+    return {postId, liked};
+})
+
+export const addComment = createAsyncThunk('post/comment', async({postId, content})=>{
+  const res = await apiRequest.post('post/comment', {content, postId});
+  return res.data;
+})
+
+export const addRating = createAsyncThunk('post/rating', async({postId, rating})=>{
+  const res = await apiRequest.post('post/rating', {rating, postId});
+  return res.data;
+})
 
 const singlepostSlice = createSlice({
     name: 'post',
@@ -96,11 +109,47 @@ const singlepostSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.error.message;
               })
+            .addCase(likePost.fulfilled, (state, action) => {
+                if (state.post.id === action.payload.postId) {
+                 
+                  state.post.isLiked = action.payload.liked;
+                }
+            })
             .addCase(savePost.fulfilled, (state, action) => {
                 if (state.post.id === action.payload.postId) {
                   state.post.isSaved = action.payload.saved;
                 }
-              });
+              })
+            .addCase(addComment.fulfilled, (state, action)=> {
+              if(state.post.id===action.payload.postId){
+                // console.log(action.payload);
+                state.post.comments.push(action.payload);
+              }
+            })
+            .addCase(addRating.fulfilled, (state, action)=>{
+              if(state.post.id===action.payload.postId){
+                // console.log(action.payload);
+                // console.log(JSON.stringify(state.post));
+                // console.log(Object.getOwnPropertyDescriptors(state.post.ratings[0])); 
+                //change karna h
+                const newRating = action.payload;
+                const existingRatingIndex = state.post.ratings.findIndex(
+                  (rating) => rating.userId === newRating.userId && rating.postId === newRating.postId
+                );
+        
+                if (existingRatingIndex === -1) {
+                  // If no existing rating, push the new rating object to the array
+                  state.post.ratings.push(newRating);
+                } else {
+                  // If rating exists, replace the existing object with the new one
+                  state.post.ratings[existingRatingIndex] = newRating;
+                }
+
+                const sumofRatings = state.post.ratings.reduce((acc, rating)=> acc+rating.rating, 0);
+                const avgrating = Math.round((sumofRatings/state.post.ratings.length)*10)/10;
+                state.post.avgRating = avgrating;
+              }
+            });
             // .addCase(deletePost.fulfilled, (state, action) => {
             //     if (!action.payload?.id) {
             //         console.log('Delete could not complete')

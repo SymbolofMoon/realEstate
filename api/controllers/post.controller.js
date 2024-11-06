@@ -62,6 +62,7 @@ export const getPost = async(req, res) => {
                       },
                     },
                 },
+                ratings: true
             }
         });
 
@@ -110,6 +111,14 @@ export const getPost = async(req, res) => {
             }
         }
 
+        let avgRating = 0;
+
+        if(Array.isArray(post.ratings) && post.ratings.length!=0){
+            const ratings = post.ratings.map(rating => rating.rating);
+            avgRating = ratings.reduce((acc, rating) => acc + rating, 0)/ratings.length;
+            avgRating = Math.round(avgRating * 10) / 10;
+        }
+
         // let comment = [];
         // if (token){
         //     try {
@@ -124,7 +133,7 @@ export const getPost = async(req, res) => {
         //         console.log(error);
         //     }
         // }
-       return  res.status(200).json({...post, isSaved: saved? true: false, isLiked: liked?true:false});
+       return  res.status(200).json({...post, isSaved: saved? true: false, isLiked: liked?true:false, avgRating:avgRating});
         
     } catch (error) {
         console.log(error);
@@ -379,4 +388,45 @@ export const createCommentonPost = async(req, res)=> {
         console.log(error);
         res.status(500).send({ error: 'Failed to Create Comment' });
 }
+}
+
+export const addRating = async(req, res)=> {
+    try{
+        const postId = req.body.postId;
+        const userId = req.userId;
+        const rating = parseInt(req.body.rating);
+        // console.log(typeof rating);
+        let RatingonPost = await prisma.postRating.findUnique({
+            where: {           
+                userId_postId: {
+                    userId: userId,
+                    postId: postId,
+                },
+            }
+        });
+
+        if(RatingonPost){
+            RatingonPost = await prisma.postRating.update({
+                where: {
+                    id: RatingonPost.id
+                },
+                data:{
+                    rating: rating
+                }
+            })
+        }else{
+            RatingonPost = await prisma.postRating.create({
+                data: {
+                    rating,
+                    userId,
+                    postId
+                },
+            });
+        }
+        res.status(200).send(RatingonPost);
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).send({ error: 'Failed to Create Rating' });
+    }
 }

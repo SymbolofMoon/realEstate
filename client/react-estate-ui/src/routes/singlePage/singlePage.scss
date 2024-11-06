@@ -149,6 +149,30 @@
         img {
           background-color: rgba(254, 205, 81, 0.209);
         }
+        // roundInput {
+        //   padding: 10px 15px;
+        //   border-radius: 25px; // Makes the input box rounded
+        //   border: 1px solid #ccc;
+        //   outline: none;
+        //   width: 100%; // Full width
+        //   transition: border-color 0.3s;
+        //   boxShadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        //   fontSize: 16px,
+        // }
+        .open-modal-btn {
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+          border: none;
+          // background-color: #007bff;
+          color: white;
+          border-radius: 4px;
+          transition: background-color 0.3s;
+      
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
 
         .featureText {
           span {

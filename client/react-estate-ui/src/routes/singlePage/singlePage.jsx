@@ -1,6 +1,7 @@
 import "./singlePage.scss";
 import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
+import RatingModal from "../../components/ratingmodal/RatingModal";
 import apiRequest from '../../lib/apiRequest';
 import { redirect, useLoaderData } from "react-router-dom";
 import DOMPurify from "dompurify";
@@ -8,7 +9,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPostById, savePost, selectPost, getPostError, getPostStatus, resetPost } from "../../slice/singlepostSlice.js";
+import { fetchPostById, savePost, selectPost, getPostError, getPostStatus, resetPost, likePost, addComment } from "../../slice/singlepostSlice.js";
 import { deletePost } from "../../slice/postSlice.js";
 
 
@@ -17,15 +18,22 @@ function SinglePage() {
   // const { postId } = useParams()
   const { postId } = useParams();
 
-  console.log(postId);
- 
-
   const post = useSelector(selectPost);
   const status = useSelector(getPostStatus);
   const error = useSelector(getPostError);
   const dispatch = useDispatch();
   const [saved, setSaved] = useState(post?.isSaved || false);
-  ////console.log(post);
+  
+ 
+
+  const [likeCount, setLikeCount] = useState(post?.likeCount || 0);
+  // console.log("Likecount ", post);
+  const [isLike, setIsLike] = useState(post?.isLiked || false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -50,6 +58,8 @@ function SinglePage() {
     if(status==='succeeded'){
       ////console.log(post.isSaved);
       setSaved(post.isSaved);
+      setIsLike(post.isLiked);
+      setLikeCount(post.likeCount);
     }
 
   }, [status, postId])
@@ -80,6 +90,34 @@ function SinglePage() {
     }
   }
 
+  const handleLike = async() => {
+   
+    // setSaved((prev)=> !prev);
+    let someLike = !isLike;
+    ////console.log(saved);
+    // setIsLike(someLike);
+    if(!currentUser){
+      navigate("/login");
+      return;
+     }
+
+    try {
+      // await apiRequest.post("/user/save", {postId: post.id});
+      setIsLike((prevIsLike) => {
+        const newIsLike = !prevIsLike; // Toggle like state
+        setLikeCount((prevCount) => newIsLike ? prevCount + 1 : prevCount - 1); // Update like count
+        return newIsLike; // Return new like state
+      });
+      await dispatch(likePost( {postId, someLike })).unwrap();
+      
+      
+      
+    } catch (error) {
+      console.log(error);
+      setIsLike((prev)=> !prev);
+    }
+  }
+
   const handleSave = async() => {
    
     // setSaved((prev)=> !prev);
@@ -97,6 +135,24 @@ function SinglePage() {
     } catch (error) {
       console.log(error);
       setSaved((prev) => !prev);
+    }
+  }
+
+  const handleComment = async(e) => {
+    e.preventDefault();
+    console.log()
+
+    const formData = new FormData(e.target);
+    console.log(formData);
+    const text = Object.fromEntries(formData.entries());
+    console.log(text.comment);
+
+    if(!text.comment) return;
+
+    try {
+      await dispatch(addComment({postId: postId, content: text.comment})).unwrap();
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -214,9 +270,13 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-            <button>
+            <button
+            onClick={handleLike}
+            style={{backgroundColor: (isLike) ? "#fece51" : "white"}}
+            >
               <img src="/chat.png" alt="" />
-              Send a Message
+              {likeCount}
+             {/* {(isLike) ? "UnLike": "Like"} */}
             </button>
             <button 
             onClick={handleSave}
@@ -225,6 +285,79 @@ function SinglePage() {
               <img src="/save.png" alt="" />
               { (saved) ? "Place Saved" : "Save the Place"}
             </button>
+          </div>
+          <p className="title">Comment</p>
+          <div className="listVertical">
+            {post.comments.map(comment=>(
+              <div className="feature">
+              <img src={comment.user.avatar || "/noavatar.jpg"} alt="" />
+              <div className="featureText">
+                <span>{comment.user.username}</span>
+              </div>
+              {comment.content}
+            </div>
+            ))}
+            <div className="feature">
+              <img src={currentUser.avatar || "/noavatar.jpg"} alt=""/>
+              {/* <div className="featureText">
+                <span>{currentUser.username}</span>
+              </div> */}
+              <form style={{display :"flex"}}
+              onSubmit={handleComment}>
+              <input style={{
+                borderRadius:25,
+                padding: 10,
+                // borderColor: #ccc,
+                borderStyle: "solid", 
+                outline: "none",
+                // width: 100%, // Full width
+                // transition: border-color,
+                // boxShadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                // fontSize: 16px,
+                }} 
+                placeholder="Add a Comment"
+                type="text"
+                name="comment"/>
+               
+              <button> Comment</button>
+               </form>
+            </div>
+          </div>
+          <p className="title">Ratings</p>
+          <div className="listHorizontal">
+            <div className="feature">
+                <img src="/school.png" alt="" />
+                <div className="featureText">
+                  <span>Rating</span>
+                  <p>{post.ratings?post.avgRating+" by "+post.ratings.length+" people.":"No Ratings"}</p>
+                </div>
+            </div>
+            <div className="feature">
+            <button
+            onClick={openModal} className="open-modal-btn"
+            > Submit a Rating </button>
+            <RatingModal isOpen={isModalOpen} onClose={closeModal} postId={postId} />
+
+              {/* <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      ...
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div> */}
+            </div>
           </div>
         </div>
       </div>

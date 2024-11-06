@@ -30,7 +30,7 @@ function Navbar() {
           <span>realEstate</span>
         </a>
         <a href="/">Home</a>
-        <a href="/">About</a>
+        <a href="/list">Post</a>
         <a href="/">Contact</a>
         <Link to="/agents">Agents</Link>
       </div>
@@ -68,7 +68,7 @@ function Navbar() {
         </div>
         <div className={open ? "menu active" : "menu"}>
           <a href="/">Home</a>
-          <a href="/">About</a>
+          <a href="/list">Post</a>
           <a href="/">Contact</a>
           <Link to="/agents">Agents</Link>
           <a href="/">Sign in</a>

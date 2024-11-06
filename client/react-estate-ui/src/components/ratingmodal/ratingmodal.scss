@@ -1,0 +1,89 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  .modal-content {
+    position: relative; /* Ensure this is relative so the close button positions correctly */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 50%;
+    text-align: left;
+  
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  
+    /* Close button positioning */
+    .close-btn {
+      position: absolute; /* Use absolute positioning relative to .modal-content */
+      top: 10px;           /* Distance from the top of the modal */
+      right: 10px;          /* Distance from the left side of the modal */
+      background: none;
+    
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #333;         /* Optional: Add color for visibility */
+      padding: 0;          /* Remove any padding that might make the button bigger */
+      width: auto !important;         /* Ensure the width of the button is automatic */
+      height: auto;        /* Same for height */
+      flex: 0 0 50%;
+    }
+  
+    .form-group {
+      margin-bottom: 20px;
+  
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+  
+      input[type="number"],
+      textarea {
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+  
+      textarea {
+        resize: vertical;
+      }
+    }
+  
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  
+    .submit-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+  
+      &:hover {
+        background-color: #218838;
+      }
+    }
+  }
+  

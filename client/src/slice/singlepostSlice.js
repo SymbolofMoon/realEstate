@@ -51,6 +51,11 @@ export const deletePost = createAsyncThunk('post/deletePost', async (postId) => 
     }
 })
 
+export const likePost = createAsyncThunk('post/like', async(postId)=> {
+  const res = await apiRequest.post('/post/like', {postId});
+  return res.data;
+})
+
 export const savePost = createAsyncThunk(
     'post/save',
     async ({ postId, saved }) => {
@@ -96,8 +101,13 @@ const singlepostSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.error.message;
               })
+            .addCase(likePost.fulfilled, (state, action) => {
+              if (state.post.id === action.payload.postId) {
+                state.post.likeCount = action.payload.likeCount;
+              }
+            })
             .addCase(savePost.fulfilled, (state, action) => {
-                if (state.post.id === action.payload.postId) {
+                if (state.post.id === action.payload.id) {
                   state.post.isSaved = action.payload.saved;
                 }
               });
