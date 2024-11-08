@@ -391,6 +391,104 @@ export const readNotification =  async(req, res)=>{
     }
 }
 
+export const favoriteCityadditionorDeletion = async(req, res) =>{
+    const userId = req.userId;
+    const favCityName = req.body.cityname;
+    const favCityNumber = req.body.citynumber;
+    
+    try {
+      const result = await prisma.$transaction(async (prisma) => {
+        // Check if the city is already a favorite
+        const favCity = await prisma.favoriteCity.findUnique({
+          where: {
+            userId_cityName: {
+              userId,
+              cityName: favCityName
+            }
+          }
+        });
+    
+        if (favCity) {
+          // If the city is already a favorite, delete the record
+          await prisma.favoriteCity.delete({
+            where: {
+              id: favCity.id
+            }
+          });
+    
+          // Return a response message indicating the city was unliked
+          return { message: "City Unliked" };
+        } else {
+          // If the city is not a favorite, create a new favorite record
+          const newFavCity = await prisma.favoriteCity.create({
+            data: {
+              userId,
+              cityName: favCityName,
+              cityNumber: favCityNumber
+            }
+          });
+    
+          // Return the newly created favorite city object
+          return newFavCity;
+        }
+      });
+    
+      // Send the result of the transaction back to the client
+      res.status(200).json(result);
+    
+    } catch (error) {
+      // Catch any errors and send an appropriate response
+      console.error(error);
+      res.status(500).json({ error: "Something went wrong" });
+    }
+    
+}
+
+export const fetchFavoriteCities = async(req, res)=>{
+    const tokenUserId =  req.userId;
+    try {
+
+        const favCities = await prisma.favoriteCity.findMany({
+            where: {
+                userId: tokenUserId
+            }
+        })
+
+        // const notifications = []
+
+        // for(const publisher of publishers){
+        //     console.log(publisher.publisherId);
+            
+        //     const notification =  await prisma.notification.findMany({
+        //         where:{
+        //             userId:publisher.publisherId,
+        //             NOT: {
+        //                 readBy: {
+        //                     hasSome:[tokenUserId]
+        //                 }
+                        
+        //             }
+        //         }
+        //     });
+
+
+        //     console.log("notification is",notification)
+        //     if(notification.length!=0){
+        //         for(const data of notification){
+        //             notifications.push(data);
+        //         }
+        //     }
+        // }
+
+
+        res.status(200).send(favCities);
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: 'Failed to fetch favorite Cities' });
+    }
+}
+
 // export const addCity = async(req, res) => {
 
 //     const body = req.body;

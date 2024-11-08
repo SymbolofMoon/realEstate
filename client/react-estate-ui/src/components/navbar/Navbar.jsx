@@ -33,6 +33,7 @@ function Navbar() {
         <a href="/list">Post</a>
         <a href="/">Contact</a>
         <Link to="/agents">Agents</Link>
+        <Link to="/city">City</Link>
       </div>
       <div className="right">
         {currentUser ? (

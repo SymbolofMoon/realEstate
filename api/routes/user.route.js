@@ -12,6 +12,8 @@ import {
     getAllPublisherandSubscriberRelations,
     addNotification,
     fetchNotifications, 
+    fetchFavoriteCities,
+    favoriteCityadditionorDeletion,
     readNotification} from "../controllers/user.controller.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
@@ -43,7 +45,11 @@ router.post("/subscribe", verifyToken, addSubscriber);
 
 router.post("/add/notification", verifyToken, addNotification);
 
+router.post("/favorite/city", verifyToken, favoriteCityadditionorDeletion );
+
 router.get("/fetch/notification", verifyToken, fetchNotifications);
+
+router.get("/fetch/favorite/cities", verifyToken, fetchFavoriteCities);
 
 router.put("/read/notification/:notificationId", verifyToken, readNotification);
 

@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import { addNotification } from "./user.controller.js";
 import { onlineUser } from "../app.js";
 import { io, socketIdfromuserId } from "../app.js";
+import { createTransport } from "nodemailer";
+
 
 export const getPosts = async(req, res) => {
 
@@ -217,6 +219,60 @@ export const addPost = async(req, res) => {
             console.log(error)
         }
 
+        // try {
+
+        //     const transporter = createTransport({
+        //         service: 'gmail', // Example: using Gmail, you can use others like SendGrid, Mailgun, etc.
+        //         auth: {
+        //           user: '', // Replace with your email
+        //           pass: ''// Replace with your email password or app-specific password
+        //         },
+        //       });
+
+        //     const usersofFavCities = await prisma.favoriteCity.findMany({
+        //         where:{
+        //             cityName: newPost.city
+        //         },
+        //         include:{
+        //             user: true
+        //         }
+        //     })
+        //     console.log(usersofFavCities);
+
+        //       // Title: ${newPost.title}
+        //         // Description: ${newPost.description}
+        //         // Price: $${newPost.price}
+        //         // Address: ${newPost.address}
+
+        //     for(const user of usersofFavCities){
+        //         const userEmail = user.user.email;
+        //         console.log(userEmail);
+        //         const mailOptions = {
+        //             to: 'prateekchandra1027@gmail.com', // Replace with the recipient's email
+        //             from: 'prateekchandra1027@gmail.com', // Your verified sender email from SendGrid
+        //             subject: 'New Post Created',
+        //             text: `A new post has been created:
+                
+              
+                
+        //         Check it out!`,
+        //           };
+    
+        //           transporter.sendMail(mailOptions, (error, info) => {
+        //             if (error) {
+        //               console.log('Error sending email:', error);
+                     
+        //             }
+        //             console.log('Email sent: ' + info.response);
+        //           });
+    
+    
+        //     }
+            
+            
+        // } catch (error) {
+        //     console.log(error);
+        // }
         
         res.status(200).json(newPost);
 

@@ -20,6 +20,7 @@ import UpdatePostPage from "./routes/updatePostPage/updatePostPage";
 
 import { singlePageLoader, agentlistPageLoader, customerprofilePageLoader, agentprofilePageLoader  } from "./lib/loader";
 import ProfilePage from "./routes/profilePage/profilePage";
+import CityPage from "./routes/cityPage/cityPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -98,6 +99,10 @@ function App() {
         {
           path:"/add",
           element: <NewPostPage />
+        },
+        {
+          path:"/city",
+          element: <CityPage />
         }
       ]
     }

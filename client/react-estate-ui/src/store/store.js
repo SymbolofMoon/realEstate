@@ -5,6 +5,7 @@ import singlepostReducer from "../slice/singlepostSlice";
 import chatReducer from "../slice/chatSlice";
 import singlechatReducer from "../slice/singlechatSlice";
 import notificationReducer from '../slice/notificationSlice';
+import favoriteCityReducer from "../slice/citySlice";
 import { thunk } from 'redux-thunk';
 
 export const store = configureStore({
@@ -14,7 +15,8 @@ export const store = configureStore({
     post: singlepostReducer,
     chats: chatReducer,
     chat: singlechatReducer,
-    notification: notificationReducer
+    notification: notificationReducer,
+    city: favoriteCityReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
