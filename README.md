@@ -15,13 +15,13 @@ This project allow users to explore about real estate properties in their desire
 - [X] Customer can set up an alert for a post from particular agent.
 
 ## (Phase 3) MileStones to achieve
-- [ ] Add Link for List page of properties
-- [ ] Add comment, like functionality in each post for property.
+- [X] Add Link for List page of properties
+- [X] Add comment, like functionality in each post for property.
 - [ ] User can see the search history.
-- [ ] User can receive a mail if a particular property is listed down in his favorite area.
-- [ ] Add rating system for agent.
-- [ ] Add sharing option for each post.
-- [ ] Customer can submit property reviews.
+- [X] User can receive a mail if a particular property is listed down in his favorite area.
+- [X] Add rating system for agent.
+- [X] Add sharing option for each post.
+- [X] Customer can submit property reviews.
 
 ## (Phase 4) MileStones to acheive
 - [ ] Added AI Chatbot in the application
