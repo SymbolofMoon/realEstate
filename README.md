@@ -96,7 +96,8 @@ And the Dependencies in Client side are:
         "sass": "^1.71.1",
         "socket.io-client": "^4.7.5",
         "timeago.js": "^4.0.2",
-        "zustand": "^4.5.4"
+        "zustand": "^4.5.4",
+        "react-share":
 
 
     .....and many more.....
