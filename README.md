@@ -8,7 +8,7 @@ This project is designed and developed in order to learn various features that c
 - [Branches](#branches)
 - [Features](#features)
 - [Dependencies](#dependencies)
-- [Tech Stack](#techstack)
+- [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
