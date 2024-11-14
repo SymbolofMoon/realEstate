@@ -3,8 +3,14 @@
 Introducing realEstate, a website for exploring real estate properties around the world. 
 This project is designed and developed in order to learn various features that can be implemented.
 
-
-
+## Table of Contents
+- [RealEstate](#realEstate)
+- [Branches](##Branches)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
 
 
