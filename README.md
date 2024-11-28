@@ -6,10 +6,10 @@ This project is designed and developed in order to learn various features that c
 ## Table of Contents
 - [RealEstate](#realestate)
 - [Branches](#branches)
-- [Features](#features)
-- [Dependencies](#dependencies)
 - [Tech Stack](#tech-stack)
+- [Dependencies](#dependencies)
 - [Installation](#installation)
+- [Features](#features)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -25,6 +25,7 @@ There are various branches in this project for proper guidance:
 [b] __Master Branch:__ This branch outlines the ideas and features that have been implemented or are yet to be implemented. It includes detailed planning of features, organized into milestones, to track their development stages.
 
 [c] __redux-implementation Branch:__ Initially, the project was implemented using React only. As the project evolved, Redux was integrated. This branch contains the current implementation of the project with Redux. Users should copy this branch to work with the latest version of the project.
+
 ## Tech Stack
 
 **Client:**
@@ -112,4 +113,11 @@ And the Dependencies in Client side are:
 
 ```
 
+## Features
+- User Can Register as a Customer or Agent. Further, they can view their dashboard and can update their profile details.
+- Anyone Can view the Post(RealEstate Property). Users can search the Post on the basis of various parameters such as City, Numer Of Rooms etc.
+- Agents Can Add, Delete, and Update the Property.
+- Customer and Agent Can have a real time chat. In fact, they can view past messages from Other users.
+- Customer can subscribe to their favorite Agents to receive notification whenever they add a Property.
+- Customers and Agents can like, comment, and share the Post on Social Media.
 
