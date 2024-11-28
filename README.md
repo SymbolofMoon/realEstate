@@ -120,4 +120,7 @@ And the Dependencies in Client side are:
 - Customer and Agent Can have a real time chat. In fact, they can view past messages from Other users.
 - Customer can subscribe to their favorite Agents to receive notification whenever they add a Property.
 - Customers and Agents can like, comment, and share the Post on Social Media.
+- Customer can submit Property and Agent Reviews.
+- Admin Can Track The activities of Agent such as CRUD Operations done by Agents.
+- Agent can register(create account) through verification from Admin.
 
