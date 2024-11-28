@@ -11,6 +11,7 @@ This project is designed and developed in order to learn various features that c
 - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)
+- [API Flow and Their Usage](#api-flow-and-their-usage)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -128,9 +129,48 @@ And the Dependencies in Client side are:
 ## Usage
 The RealEstate App streamlines property search and management for users, agents, and administrators. Property seekers can explore listings using advanced filters, save favorites, and track their search history for quick access. Notifications keep users updated on price drops or new listings matching their criteria, while a real-time chat system enables seamless communication with agents. Social features like likes, comments, and sharing enhance user engagement, while administrators can manage agent verifications and oversee platform activities through a dedicated dashboard. This comprehensive solution simplifies the property discovery process and improves user experience.
 
-## API Flow
+## API Flow and Their Usage
 This section will describe the usage of each API that is used in this project.
 
-1. User API
+1. Authentication and Authorization APIs
     - `POST /api/auth/register` -> Registration
+    - `POST /api/auth/login` -> Login
+    - `POST /api/auth/logout` -> LogOut
+
+2. Post Flow APIs
+    - `GET /api/post` -> Get All Posts
+    - `GET /api/post/{postId}` -> Get Single Post
+    - `POST /api/post` -> Add a Post
+    - `PUT /api/post/{postId}` -> Update a Post
+    - `DELETE /api/post/{postId}` -> Delete a Post
+    - `POST /api/post/like` -> Like a Post
+    - `POST /api/post/comment` -> Comment a Post
+    - `POST /api/post/rating` -> Rate a Post
+
+3. Chat Flow APIs
+    - `GET /api/chat` -> Get All Chats
+    - `GET /api/chat/chatId` -> Get a Particular Chat
+    - `POST /api/chat` -> Create a new Chat
+    - `DELETE /api/chat/{chatId}` -> Delete a Chat
+    - `PUT /api/chat/read/{chatId}` -> Read a Chat
+ 
+4. Message Flow APIs
+    - `POST /api/message/{chatId}` -> Add a message to Particular Chat
+    - `PUT /api/message/{chatId}` -> Read a message of a Particular Chat
+
+5. User Flow APIs
+    - `GET /api/user/agents` -> Get All Agents
+    - `PUT /api/user/{userId}` -> Update a User
+    - `DELETE /api/user/{userId}` -> Delete a User
+    - `POST /api/user/save` -> Save the Post
+    - `GET /api/user/profilePosts` -> Get all the Saved Posts
+    - `GET /api/user/notification` -> Get Number of Notifications
+    - `POST /api/user/subscribe` -> User can Subscribe another user
+    - `POST /api/user/add/notification` -> Add a notification
+    - `POST /api/user/favorite/city` -> User can mark or unmark a city as favorite.
+    - `GET /api/user/fetch/notification` -> Get All Notifications related to User
+    - `GET /api/user/fetch/favorite/cities` -> Get Favorite Cities
+    - `PUT /api/user/read/notification/:notificationId` -> Read a Notification
+
+
 
