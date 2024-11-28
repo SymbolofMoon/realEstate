@@ -128,3 +128,9 @@ And the Dependencies in Client side are:
 ## Usage
 The RealEstate App streamlines property search and management for users, agents, and administrators. Property seekers can explore listings using advanced filters, save favorites, and track their search history for quick access. Notifications keep users updated on price drops or new listings matching their criteria, while a real-time chat system enables seamless communication with agents. Social features like likes, comments, and sharing enhance user engagement, while administrators can manage agent verifications and oversee platform activities through a dedicated dashboard. This comprehensive solution simplifies the property discovery process and improves user experience.
 
+## API Flow
+This section will describe the usage of each API that is used in this project.
+
+1. User API
+    - `POST /api/auth/register` -> Registration
+
